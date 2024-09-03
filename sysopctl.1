@@ -1,0 +1,70 @@
+.TH sysopctl 1 "September 2024" "sysopctl v0.1.0" "System Administration"
+
+.SH NAME
+sysopctl \- A custom command for managing system resources and tasks.
+
+.SH SYNOPSIS
+.B sysopctl
+.RI [ OPTION ] [ ARGUMENT ]
+
+.SH DESCRIPTION
+.B sysopctl
+is a command-line tool for managing Linux system resources, including services, processes, and system health. It provides an easy interface for common administrative tasks.
+
+.SH OPTIONS
+.TP
+.B --help
+Display this help message and exit.
+
+.TP
+.B --version
+Show the version information of the command.
+
+.TP
+.B service list
+List all running services.
+
+.TP
+.B service start <service-name>
+Start the specified service.
+
+.TP
+.B service stop <service-name>
+Stop the specified service.
+
+.TP
+.B system load
+Display the current system load averages.
+
+.TP
+.B disk usage
+Display disk usage statistics by partition.
+
+.TP
+.B process monitor
+Monitor system processes in real-time.
+
+.TP
+.B logs analyze
+Analyze recent critical log entries.
+
+.TP
+.B backup <path>
+Backup specified system files to /backup/.
+
+.SH EXAMPLES
+.PP
+To list all running services:
+.IP
+sysopctl service list
+.PP
+To start a service:
+.IP
+sysopctl service start apache2
+.PP
+To monitor system processes:
+.IP
+sysopctl process monitor
+
+.SH AUTHOR
+Written by the system administration team.

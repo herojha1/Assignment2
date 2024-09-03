@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Command Version
+VERSION="v0.1.0"
+
+# Function to display usage instructions (help)
+usage() {
+    echo "sysopctl - A custom command for managing system resources and tasks"
+    echo ""
+    echo "Usage: sysopctl [option] [arguments]"
+    echo ""
+    echo "Options:"
+    echo "  --help                   Display this help message"
+    echo "  --version                Display command version"
+    echo "  service list             List all running services"
+    echo "  service start <service>  Start a specified service"
+    echo "  service stop <service>   Stop a specified service"
+    echo "  system load              View system load averages"
+    echo "  disk usage               Display disk usage statistics"
+    echo "  process monitor          Monitor system processes in real-time"
+    echo "  logs analyze             Analyze recent critical log entries"
+    echo "  backup <path>            Backup specified system files"
+}
+
+# Function to display version information
+version() {
+    echo "sysopctl $VERSION"
+}
+
+# Function to list all running services
+list_services() {
+    echo "Listing all running services:"
+    systemctl list-units --type=service --state=running
+}
+
+# Function to view system load averages
+view_load() {
+    echo "System Load Averages:"
+    uptime
+}
+
+# Function to start a system service
+start_service() {
+    sudo systemctl start $1
+    echo "Service $1 started."
+}
+
+# Function to stop a system service
+stop_service() {
+    sudo systemctl stop $1
+    echo "Service $1 stopped."
+}
+
+# Function to display disk usage statistics
+disk_usage() {
+    echo "Disk Usage Statistics:"
+    df -h
+}
+
+# Function to monitor system processes in real-time
+process_monitor() {
+    echo "Monitoring system processes:"
+    top
+}
+
+# Function to analyze system logs
+analyze_logs() {
+    echo "Analyzing recent critical log entries:"
+    sudo journalctl -p 3 -xb | tail -n 20
+}
+
+# Function to backup system files
+backup_files() {
+    if [ -z "$1" ]; then
+        echo "Please provide a path to backup."
+        exit 1
+    fi
+    echo "Starting backup for $1..."
+    sudo rsync -a $1 /backup/
+    echo "Backup completed."
+}
+
+# Main script logic
+case "$1" in
+    --help)
+        usage
+        ;;
+    --version)
+        version
+        ;;
+    service)
+        case "$2" in
+            list)
+                list_services
+                ;;
+            start)
+                start_service $3
+                ;;
+            stop)
+                stop_service $3
+                ;;
+            *)
+                echo "Invalid service command: $2"
+                usage
+                ;;
+        esac
+        ;;
+    system)
+        case "$2" in
+            load)
+                view_load
+                ;;
+            *)
+                echo "Invalid system command: $2"
+                usage
+                ;;
+        esac
+        ;;
+    disk)
+        case "$2" in
+            usage)
+                disk_usage
+                ;;
+            *)
+                echo "Invalid disk command: $2"
+                usage
+                ;;
+        esac
+        ;;
+    process)
+        case "$2" in
+            monitor)
+                process_monitor
+                ;;
+            *)
+                echo "Invalid process command: $2"
+                usage
+                ;;
+        esac
+        ;;
+    logs)
+        case "$2" in
+            analyze)
+                analyze_logs
+                ;;
+            *)
+                echo "Invalid logs command: $2"
+                usage
+                ;;
+        esac
+        ;;
+    backup)
+        backup_files $2
+        ;;
+    *)
+        echo "Invalid option: $1"
+        usage
+        ;;
+esac
